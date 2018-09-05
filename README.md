@@ -12,7 +12,7 @@ $ cd OpenColorIO-Configs/nuke-default/
 ```
 Now let's mount the current working directory to a docker container
 ```sh
-$ docker run --rm -it -v ${PWD}:/mnt/ocio-config ocio /bin/bash
+$ docker run --rm -it -v ${PWD}:/mnt/ocio-config ayoburgess/ocio /bin/bash
 ```
 Now we're inside of a Docker container with access to the OCIO python bindings (PyOpenColorIO) which we can use to generate a new OCIO config.
 ```sh
@@ -24,7 +24,7 @@ $ exit
 ```
 We've now exited the Docker container and have a newly created config.ocio in the current working directory. Now let's verify the config
 ```sh
-$ docker run --rm -it -v $PWD:/mnt/ocio-config ocio ociocheck --iconfig /mnt/ocio-config/config.ocio
+$ docker run --rm -it -v $PWD:/mnt/ocio-config ayoburgess/ocio ociocheck --iconfig /mnt/ocio-config/config.ocio
 
 OpenColorIO Library Version: 1.1.0
 OpenColorIO Library VersionHex: 16842752
