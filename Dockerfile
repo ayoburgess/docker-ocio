@@ -10,7 +10,6 @@ RUN yum update -y && yum -y install epel-release && yum install -y \
 
 # OCIO
 ARG OCIO_ROOT=/opt/ocio
-ARG SOURCES_DIR=${OCIO_ROOT}/src
 ARG OCIO_VER=1.1.0
 WORKDIR ${OCIO_ROOT}/src
 RUN curl -O -L https://github.com/imageworks/OpenColorIO/archive/v${OCIO_VER}.tar.gz && \
@@ -24,6 +23,7 @@ ENV PYTHONPATH=/usr/local/lib/python2.7/site-packages:${PYTHONPATH}
 
 # cleanup
 WORKDIR /
-RUN rm -rf ${SOURCES_DIR} && \
+RUN rm -rf ${OCIO_ROOT} && \
     yum erase -y gcc-c++ make cmake3 python-devel git && \
+    rm -rf /var/cache/yum && \
     hash -r
