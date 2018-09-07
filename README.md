@@ -1,68 +1,61 @@
 # docker-ocio
-docker-ocio defines a [Docker](https://www.docker.com) image that contains [OpenColorIO](http://www.http://opencolorio.org/) command line utilities (ociocheck and ociobakelut) and python bindings (PyOpenColorIO).
+This project defines a [Docker](https://www.docker.com) image that contains [OpenColorIO](http://www.http://opencolorio.org/) command line utilities (ociocheck and ociobakelut) and python bindings (PyOpenColorIO).
+
 # Installation
 ```sh
 $ docker pull ayoburgess/ocio
 ```
+
 # Usage
-Using python bindings to generate an OCIO config
+Using python bindings to compile an OCIO config
 ```sh
-$ git clone https://github.com/imageworks/OpenColorIO-Configs.git
-$ cd OpenColorIO-Configs/nuke-default/
+$ git clone https://github.com/ayoburgess/cgi_aces_ocio.git
+$ docker run --rm -it -v ${PWD}:/mnt/${PWD} ayoburgess/ocio python /mnt/${PWD}/cgi_aces_ocio/make.py
+
+Wrote config_acescg.ocio successfully
+Wrote config_linear_srgb.ocio successfully
 ```
-Now let's mount the current working directory to a docker container
+
+Now let's verify one of the newly generated configs
 ```sh
-$ docker run --rm -it -v ${PWD}:/mnt/ocio-config ayoburgess/ocio /bin/bash
-```
-Now we're inside of a Docker container with access to the OCIO python bindings (PyOpenColorIO) which we can use to generate a new OCIO config.
-```sh
-$ cd /mnt/ocio-config/
-$ python make.py 
-OCIO 1.1.0
-Wrote config.ocio
-$ exit
-```
-We've now exited the Docker container and have a newly created config.ocio in the current working directory. Now let's verify the config
-```sh
-$ docker run --rm -it -v $PWD:/mnt/ocio-config ayoburgess/ocio ociocheck --iconfig /mnt/ocio-config/config.ocio
+$ docker run --rm -it -v ${PWD}:/mnt/${PWD} ayoburgess/ocio ociocheck --iconfig /mnt/${PWD}/cgi_aces_ocio/config_acescg.ocio
 
 OpenColorIO Library Version: 1.1.0
 OpenColorIO Library VersionHex: 16842752
-Loading /mnt/ocio-config/config.ocio
+Loading /mnt//home/ayo/workspace/github/cgi_aces_ocio/config_acescg.ocio
 
 ** General **
-Search Path: luts
-Working Dir: /mnt/ocio-config
+Search Path: luts:matrices
+Working Dir: /mnt/home/ayo/workspace/github/cgi_aces_ocio
 
 Default Display: default
-Default View: None
+Default View: ACES Rec. 709
 
 ** Roles **
-raw (default)
-linear (scene_linear)
-raw (data)
-linear (reference)
-Cineon (compositing_log)
-Cineon (color_timing)
-sRGB (color_picking)
-sRGB (texture_paint)
-sRGB (matte_paint)
+Utility - Raw (default)
+ACES - ACEScg (scene_linear)
+Utility - Raw (data)
+ACES - ACES2065-1 (reference)
+ACES - ACEScct (compositing_log)
+ACES - ACEScct (color_timing)
+Utility - Raw (color_picking)
+Utility - Raw (texture_paint)
+Utility - Raw (matte_paint)
+ACES - ACEScg (compositing_linear: user)
+ACES - ACEScg (rendering: user)
 
 ** ColorSpaces **
-linear
-sRGB
-sRGBf
-rec709
-Cineon
-Gamma1.8
-Gamma2.2
-Panalog
-REDLog
-ViperLog
-AlexaV3LogC
-PLogLin
-SLog
-raw
+ACES - ACES2065-1
+ACES - ACEScg
+ACES - ACESproxy
+ACES - ACEScc
+ACES - ACEScct
+Input - Linear (sRGB)
+Input - sRGB
+Input - Rec. 709
+Utility - Raw
+Output - ACES Rec. 709
+Output - ACES sRGB
 
 ** Looks **
 no looks defined
