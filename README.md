@@ -1,4 +1,4 @@
-# docker-ocio
+# Introduction
 This project defines a [Docker](https://www.docker.com) image that contains [OpenColorIO](http://www.http://opencolorio.org/) command line utilities (ociocheck and ociobakelut) and python bindings (PyOpenColorIO).
 
 # Installation
