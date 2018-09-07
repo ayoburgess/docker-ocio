@@ -2,13 +2,13 @@
 This project defines a [Docker](https://www.docker.com) image that contains [OpenColorIO](http://www.http://opencolorio.org/) command line utilities (ociocheck and ociobakelut) and python bindings (PyOpenColorIO).
 
 # Installation
-```sh
+```
 $ docker pull ayoburgess/ocio
 ```
 
 # Usage
-Using python bindings to compile an OCIO config
-```sh
+## Using python bindings to compile an OCIO config
+```
 $ git clone https://github.com/ayoburgess/cgi_aces_ocio.git
 $ docker run --rm -it -v ${PWD}:/mnt/${PWD} ayoburgess/ocio python /mnt/${PWD}/cgi_aces_ocio/make.py
 
@@ -16,8 +16,8 @@ Wrote config_acescg.ocio successfully
 Wrote config_linear_srgb.ocio successfully
 ```
 
-Now let's verify one of the newly generated configs
-```sh
+## Verify one of the newly generated configs with ociocheck
+```
 $ docker run --rm -it -v ${PWD}:/mnt/${PWD} ayoburgess/ocio ociocheck --iconfig /mnt/${PWD}/cgi_aces_ocio/config_acescg.ocio
 
 OpenColorIO Library Version: 1.1.0
